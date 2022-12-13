@@ -143,22 +143,13 @@ def zip_file(src_dir):
     '''
     压缩 src_dir 文件夹
     '''
-
     zip_name = src_dir + '.zip'
-
     zip_files = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
-
     for dirpath, _, filenames in os.walk(src_dir):
-
         fpath = dirpath.replace(src_dir, '')
-
         fpath = fpath and fpath + os.sep or ''
-
         for filename in filenames:
-
             zip_files.write(os.path.join(dirpath, filename), fpath + filename)
-
-            print('压缩成功> ')
 
     zip_files.close()
 
@@ -260,7 +251,7 @@ def release_module() -> None:
         )
 
         # 梳理逻辑, 本脚本分为两个模块
-        # 1. 通过脚本修改版本号则保证 pubspec.yaml 和 apk 版本一致
+        # 1. 通过脚本修改版本号则保证 pubspec.yaml 和程序版本一致
         # 2. 通过脚本发布软件保证 pubspec.yaml 和 body.md , tag.md 的版本一致
         # 一般流程为 1 -> 1 -> 1 -> 2 即多次修改版本号后发布, 无异常
         # 最后一步, 进入 release.bat
@@ -277,7 +268,7 @@ def release_module() -> None:
 
     else:
         # 反之输入的不是 'y'
-        print('> 已取消发布 apk')
+        print('> 已取消发布程序')
 
 
 if __name__ == '__main__':
