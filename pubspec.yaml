@@ -1,0 +1,62 @@
+name: danmaku
+
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 0.0.1+1
+
+environment:
+  sdk: '>=2.18.5 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  provider: ^6.0.4                    # 状态管理
+  window_manager: ^0.2.8              # 窗口管理
+  shared_preferences: ^2.0.15         # 数据持久化
+  json_serializable: ^6.5.3           # json 相关
+  json_annotation: ^4.7.0             # json 相关
+  json_model: ^1.0.0                  # json 相关
+  dio: ^4.0.6                         # 网络请求
+  url_launcher: ^6.1.6                # 打开外部连接
+  system_tray: ^2.0.2                 # 系统托盘
+  preference_list: ^0.0.1             # 好看的列表
+  device_info_plus: ^8.0.0            # 设备信息
+  package_info_plus: ^3.0.1           # 程序内部获取包信息
+  battery_plus: ^3.0.2
+  fluttericon: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.3.2                # 代码生成用实用工具
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: HarmonyOS_Sans_SC
+      fonts:
+        - asset: assets/fonts/HarmonyOS_Sans_SC_Regular.ttf
+        - asset: assets/fonts/HarmonyOS_Sans_SC_Thin.ttf
+          weight: 100
+        - asset: assets/fonts/HarmonyOS_Sans_SC_Light.ttf
+          weight: 300
+        - asset: assets/fonts/HarmonyOS_Sans_SC_Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HarmonyOS_Sans_SC_Bold.ttf
+          weight: 700
+        - asset: assets/fonts/HarmonyOS_Sans_SC_Black.ttf
+          weight: 900
+    - family: Saira
+      fonts:
+        - asset: assets/fonts/Saira.ttf
+    - family: QWeather_Icon
+      fonts:
+        - asset: assets/fonts/QWeather_Icons.ttf
+  assets:
+    - assets/fonts/
+    - assets/icon/
+

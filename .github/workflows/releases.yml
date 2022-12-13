@@ -1,0 +1,22 @@
+name: Releases
+
+on:
+  push:
+    tags:
+    - v**
+
+jobs:
+  release:
+    name: 自动发布
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: ".release_tool/Release.zip"
+          tag: "v0.0.1+2"
+          bodyFile: "body.md"
+          skipIfReleaseExists: true
+          token: ${{ secrets.WAREHOUSE_TOKEN }}}
