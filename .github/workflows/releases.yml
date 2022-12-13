@@ -17,6 +17,6 @@ jobs:
         with:
           artifacts: ".release_tool/Release.zip"
           tag: "v0.0.1+1"
-          bodyFile: "body.md"
+          bodyFile: "release_tool/body.md"
           skipIfReleaseExists: true
           token: ${{ secrets.WAREHOUSE_TOKEN }}}
