@@ -16,7 +16,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: ".release_tool/Release.zip,.release_tool/danmaku-installer.exe"
-          tag: "v0.0.1+9"
+          tag: "v0.0.1+10"
           bodyFile: ".release_tool/body.md"
           skipIfReleaseExists: true
           token: ${{ secrets.WAREHOUSE_TOKEN }}

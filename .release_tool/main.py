@@ -24,6 +24,7 @@ FILE_DIR = {
     'release_dir': r'build\windows\runner\Release',
     'release_tool_dir': r'.release_tool',
     'installer_creator_iss': r'.release_tool\installer_creator.iss',
+    'commit_txt': r'commit.txt',
 }
 
 
@@ -276,14 +277,22 @@ def release_module() -> None:
         release_version_str = get_version_from_pubspec_yaml()
         print(f'> 正在发布 v{release_version_str}')
         os.system('git add .')
-        commit = ''
-        input_str = ''
-        commit += input_tool(
-            first_message='请添加 commit',
-            rule='(q)',
-            error_message='继续输入, 输入 q 结束',
-            rule_function=lambda input_str: input_str == 'q',
+
+        print('> 已为你打开 commit.txt 文件')
+        os.startfile(FILE_DIR['commit_txt'])
+
+        # 打开文件后询问是否完成
+        input_str = input_tool(
+            first_message='是否完成修改',
+            rule='(y)',
+            error_message='请输入 y 以确认修改完成',
+            rule_function=lambda input_str: input_str == 'y',
         )
+
+        commit = ''
+        with open(FILE_DIR['commit_txt'], 'r', encoding='utf-8') as file:
+            commit = file.read()
+
         os.system(f'git commit -m "{commit}"')
         os.system('git push')
         os.system(f'git tag v{release_version_str}')

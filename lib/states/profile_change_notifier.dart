@@ -34,18 +34,13 @@ class ProfileModel extends ChangeNotifier {
         ),
       );
       await Directory(Directory.current.path + r'\user_data').create();
+      await launchAtStartup.enable();
     }
     profile = Profile.fromJson(jsonDecode(_preferences.getString('profile')!));
 
     profile.themeMode ??= ThemeMode.system;
     profile.userDataDir ??= Directory.current.path + r'\user_data';
     profile.startUp ??= true;
-
-    if (profile.startUp!) {
-      await launchAtStartup.enable();
-    } else {
-      await launchAtStartup.disable();
-    }
 
     const WindowOptions windowOptions = WindowOptions(
       size: Size(1600, 900),
