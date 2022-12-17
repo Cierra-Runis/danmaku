@@ -4,7 +4,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 0.0.1+7
+version: 0.0.1+8
 
 environment:
   sdk: '>=2.18.5 <3.0.0'
@@ -25,8 +25,8 @@ dependencies:
   preference_list: ^0.0.1             # 好看的列表
   device_info_plus: ^8.0.0            # 设备信息
   package_info_plus: ^3.0.1           # 程序内部获取包信息
-  battery_plus: ^3.0.2
-  fluttericon: ^2.0.0
+  battery_plus: ^3.0.2                # 获取设备电量
+  fluttericon: ^2.0.0                 # 图标
 
 dev_dependencies:
   flutter_test:

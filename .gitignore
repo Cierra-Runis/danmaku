@@ -42,3 +42,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.release_tool/Inno Setup 6/
+.release_tool/Release/

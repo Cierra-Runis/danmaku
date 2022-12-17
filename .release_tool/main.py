@@ -6,14 +6,15 @@ main.py
 import os
 import re
 import shutil
-import yaml
 import zipfile
+import yaml
 
 REG_STR = {
     'version_str': r'(\d+)\.(\d+)\.(\d+)\+(\d+)',
     'pubspec_yaml': r'version: (\d+\.\d+\.\d+\+\d+)',
     'release_yml': r'tag: "v(.*)"',
-    'body_md': r'v(.*)'
+    'body_md': r'v(.*)',
+    'installer_creator_iss': r'#define MyAppVersion "(.*)"',
 }
 
 FILE_DIR = {
@@ -22,10 +23,11 @@ FILE_DIR = {
     'body_md': r'.release_tool\body.md',
     'release_dir': r'build\windows\runner\Release',
     'release_tool_dir': r'.release_tool',
+    'installer_creator_iss': r'.release_tool\installer_creator.iss',
 }
 
 
-def get_current_version_str_from_pubspec_yaml() -> str:
+def get_version_from_pubspec_yaml() -> str:
     '''
     从 pubspec.yaml 文件中获取当前版本的字符串
     '''
@@ -48,7 +50,7 @@ def rewrite_tool(file_dir: str, reg: str, repl: str) -> None:
     file.close()
 
 
-def rewrite_current_version_str_in_pubspec_yaml(new_version: str) -> None:
+def rewrite_version_in_pubspec_yaml(new_version: str) -> None:
     '''
     修改 pubspec.yaml 文件中的版本号
     '''
@@ -59,7 +61,18 @@ def rewrite_current_version_str_in_pubspec_yaml(new_version: str) -> None:
     )
 
 
-def rewrite_release_version_in_mercurius_warehouse(new_version: str) -> None:
+def rewrite_version_in_installer_creator_iss(new_version: str) -> None:
+    '''
+    修改 installer_creator.iss 文件中的版本号
+    '''
+    rewrite_tool(
+        file_dir=FILE_DIR['installer_creator_iss'],
+        reg=REG_STR['installer_creator_iss'],
+        repl=f'#define MyAppVersion "{new_version}"',
+    )
+
+
+def rewrite_release_version(new_version: str) -> None:
     '''
     修改 release.yml 和 body.md 文件中的版本号
     '''
@@ -76,7 +89,7 @@ def rewrite_release_version_in_mercurius_warehouse(new_version: str) -> None:
     )
 
 
-def is_new_version_bigger(current_version: str, new_version: str) -> bool:
+def is_new_version_legal(current_version: str, new_version: str) -> bool:
     '''
     比较版本号大小, 两字符串格式类似 1.0.0+1
     '''
@@ -96,9 +109,9 @@ def is_new_version_bigger(current_version: str, new_version: str) -> bool:
             # 从最高级一一对比, 某级新版本若小于旧版本, 则是新版本小了
             # 返回 False
             return False
-    # 运行到这说明俩版本号一样大
-    # 返回 False
-    return False
+    # 运行到这说明俩版本号一样大, 即重新构建该版本
+    # 返回 True
+    return True
 
 
 def input_tool(
@@ -125,18 +138,17 @@ def input_tool(
     return input_str
 
 
-def copy_file(src_file: str, dst_path: str) -> None:
+def copy_tree(src_path: str, dst_path: str) -> None:
     '''
-    复制 src_file 文件至 dst_path 目录下, 且要求 dst_path 后不接 '/'
+    复制 src_path 文件夹至 dst_path 目录下, 且要求俩者后不接 '/'
     '''
-    if not os.path.isfile(src_file):
-        print(f'> 所复制 {src_file} 不存在')
+    if not os.path.isdir(src_path):
+        print(f'> 所复制 {src_path} 不存在')
     else:
-        _, file_name = os.path.split(src_file)
-        if not os.path.exists(dst_path + '/'):
-            os.makedirs(dst_path + '/')
-        shutil.copy(src_file, dst_path + '/' + file_name)
-        print(f'> 已复制 {src_file} 至 {dst_path} 下')
+        if os.path.isdir(dst_path):
+            shutil.rmtree(dst_path)
+        shutil.copytree(src_path, dst_path)
+        print(f'> 已复制 {src_path} 至 {dst_path} 下')
 
 
 def zip_file(src_dir):
@@ -152,6 +164,7 @@ def zip_file(src_dir):
             zip_files.write(os.path.join(dirpath, filename), fpath + filename)
 
     zip_files.close()
+    print(f'> 已压缩 {src_dir}.zip')
 
 
 def main_module() -> None:
@@ -160,7 +173,7 @@ def main_module() -> None:
     '''
     # 程序开始
     print('-- main.py --')
-    current_version_str = get_current_version_str_from_pubspec_yaml()
+    current_version_str = get_version_from_pubspec_yaml()
     input_str = ''
 
     input_str = input_tool(
@@ -183,10 +196,10 @@ def main_module() -> None:
             ),
         )
 
-        # 当新版本号不大于原版本号时
-        while not is_new_version_bigger(current_version_str, input_str):
+        # 当新版本号不合法时
+        while not is_new_version_legal(current_version_str, input_str):
             # 重新提醒并输入
-            print(f'> 请使得新输入的版本号 {input_str} 大于旧版本号 {current_version_str}')
+            print(f'> 请使得新输入的版本号 {input_str} 不小于旧版本号 {current_version_str}')
             input_str = input_tool(
                 first_message='请输入版本号',
                 rule='',
@@ -196,24 +209,28 @@ def main_module() -> None:
                     input_str,
                 ),
             )
-        # 直至新版本号大于原版本号
+        # 直至新版本号不大于原版本号
 
         # 写入新版本号至 pubspec.yaml 文件
-        rewrite_current_version_str_in_pubspec_yaml(input_str)
+        rewrite_version_in_pubspec_yaml(input_str)
+        # 写入新版本号至 installer-creator.iss 文件
+        rewrite_version_in_installer_creator_iss(input_str)
 
         # 版本号已修改
-        print(f'> 版本号已修改为 {get_current_version_str_from_pubspec_yaml()}')
+        print(f'> 版本号已修改为 {get_version_from_pubspec_yaml()}')
 
         # 修改版本号后自动构建
         os.system('flutter build windows')
 
-        # 并将 build 后的 Release 文件夹打包转移至 .release_tool/
-        zip_file(FILE_DIR['release_dir'])
-
-        copy_file(
-            src_file=f"{FILE_DIR['release_dir']}.zip",
-            dst_path=FILE_DIR['release_tool_dir'],
+        # # 并将 build 后的 Release 文件夹转移至 .release_tool/
+        copy_tree(
+            src_path=FILE_DIR['release_dir'],
+            dst_path=f"{FILE_DIR['release_tool_dir']}/Release",
         )
+
+        # 并进行压缩和打包
+        zip_file(f"{FILE_DIR['release_tool_dir']}/Release")
+        os.system(FILE_DIR["release_tool_dir"] + r'\installer_creator.bat')
 
     else:
         # 反之输入的不是 'y'
@@ -224,7 +241,7 @@ def release_module() -> None:
     '''
     发布模块
     '''
-    current_version_str = get_current_version_str_from_pubspec_yaml()
+    current_version_str = get_version_from_pubspec_yaml()
     input_str = ''
 
     input_str = input_tool(
@@ -237,7 +254,7 @@ def release_module() -> None:
     # 若输入的是 'y'
     if input_str == 'y':
         # 修改发布版本
-        rewrite_release_version_in_mercurius_warehouse(current_version_str)
+        rewrite_release_version(current_version_str)
         # 打开 body.md 文件进行修改
         print('> 已为你打开 body.md 文件')
         os.startfile(FILE_DIR['body_md'])
@@ -251,20 +268,19 @@ def release_module() -> None:
         )
 
         # 梳理逻辑, 本脚本分为两个模块
-        # 1. 通过脚本修改版本号则保证 pubspec.yaml 和程序版本一致
-        # 2. 通过脚本发布软件保证 pubspec.yaml 和 body.md , tag.md 的版本一致
+        # 1. 通过脚本修改版本号则保证 pubspec.yaml, installer_creator.iss, 程序版本一致
+        # 2. 通过脚本发布软件保证 pubspec.yaml, body.md, tag 的版本一致
         # 一般流程为 1 -> 1 -> 1 -> 2 即多次修改版本号后发布, 无异常
-        # 最后一步, 进入 release.bat
-        # 提交 release
+        # 最后一步, 提交 release
 
-        release_version_str = get_current_version_str_from_pubspec_yaml()
+        release_version_str = get_version_from_pubspec_yaml()
         print(f'> 正在发布 v{release_version_str}')
         os.system('git add .')
         os.system(f'git commit -m "v{release_version_str}"')
         os.system('git push')
         os.system(f'git tag v{release_version_str}')
         os.system('git push --tags')
-        print(f'> 已发布 v{release_version_str}')
+        print(f'> 已发布 v{release_version_str}, 请检查发布情况')
 
     else:
         # 反之输入的不是 'y'
