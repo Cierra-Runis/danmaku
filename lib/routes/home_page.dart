@@ -10,18 +10,6 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-String getTrayImagePath(String imageName) {
-  return Platform.isWindows
-      ? 'assets/icon/$imageName.ico'
-      : 'assets/icon/$imageName.png';
-}
-
-String getImagePath(String imageName) {
-  return Platform.isWindows
-      ? 'assets/icon/$imageName.bmp'
-      : 'assets/icon/$imageName.png';
-}
-
 IconData getBatteryIconByLevel(int level) {
   int index = (level / 25).ceil();
   switch (index) {
@@ -157,7 +145,7 @@ class _HomePageState extends State<HomePage> {
     await _systemTray.initSystemTray(
       title: Constant.APP_NAME,
       toolTip: Constant.APP_NAME,
-      iconPath: getTrayImagePath('app_icon'),
+      iconPath: 'assets/icon/app_icon.ico',
     );
 
     _systemTray.registerSystemTrayEventHandler(
@@ -401,6 +389,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      drawer: const DevLogDrawerWidget(),
     );
   }
 }

@@ -276,7 +276,15 @@ def release_module() -> None:
         release_version_str = get_version_from_pubspec_yaml()
         print(f'> 正在发布 v{release_version_str}')
         os.system('git add .')
-        os.system(f'git commit -m "v{release_version_str}"')
+        commit = ''
+        input_str = ''
+        commit += input_tool(
+            first_message='请添加 commit',
+            rule='(q)',
+            error_message='继续输入, 输入 q 结束',
+            rule_function=lambda input_str: input_str == 'q',
+        )
+        os.system(f'git commit -m "{commit}"')
         os.system('git push')
         os.system(f'git tag v{release_version_str}')
         os.system('git push --tags')

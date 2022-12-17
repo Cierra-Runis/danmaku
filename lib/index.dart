@@ -28,6 +28,7 @@ export 'package:preference_list/preference_list.dart';
 export 'package:device_info_plus/device_info_plus.dart';
 export 'package:package_info_plus/package_info_plus.dart';
 export 'package:battery_plus/battery_plus.dart';
+export 'package:file_picker/file_picker.dart';
 
 // 图标
 export 'package:fluttericon/brandico_icons.dart';
@@ -48,3 +49,4 @@ export 'package:fluttericon/rpg_awesome_icons.dart';
 export 'package:fluttericon/typicons_icons.dart';
 export 'package:fluttericon/web_symbols_icons.dart';
 export 'package:fluttericon/zocial_icons.dart';
+export 'package:launch_at_startup/launch_at_startup.dart';

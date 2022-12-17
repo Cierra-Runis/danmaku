@@ -45,3 +45,4 @@ app.*.map.json
 
 .release_tool/Inno Setup 6/
 .release_tool/Release/
+user_data/*

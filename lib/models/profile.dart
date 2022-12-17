@@ -19,6 +19,8 @@ class Profile {
   */
   ThemeMode? themeMode;
   String? currentVersion;
+  String? userDataDir;
+  bool? startUp;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>
       _$ProfileFromJson(json);

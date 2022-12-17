@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Danmaku"
-#define MyAppVersion "0.0.1+8"
+#define MyAppVersion "0.0.1+9"
 #define MyAppPublisher "Cierra_Runis"
 #define MyAppURL "https://github.com/Cierra-Runis"
 #define MyAppExeName "danmaku.exe"

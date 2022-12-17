@@ -47,28 +47,24 @@ class _SplashPageState extends State<SplashPage>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {},
-                icon: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/icon/icon.png'),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 15.0,
-                        spreadRadius: 4.0,
-                      ),
-                    ],
+              Container(
+                width: 200,
+                height: 200,
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
+                  image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/icon/app_icon.png'),
+                  ),
+                  shadows: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 100.0,
+                      spreadRadius: 1.0,
+                    ),
+                  ],
                 ),
               ),
               Column(

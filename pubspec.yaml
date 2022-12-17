@@ -4,7 +4,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 0.0.1+8
+version: 0.0.1+9
 
 environment:
   sdk: '>=2.18.5 <3.0.0'
@@ -27,11 +27,16 @@ dependencies:
   package_info_plus: ^3.0.1           # 程序内部获取包信息
   battery_plus: ^3.0.2                # 获取设备电量
   fluttericon: ^2.0.0                 # 图标
+  isar: ^3.0.5                        # 数据库
+  isar_flutter_libs: ^3.0.5           # 数据库的库
+  file_picker: ^5.2.4                 # 文件选取
+  launch_at_startup: ^0.2.0           # 自启动
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  isar_generator: ^3.0.5              # 数据库代码生成工具
   build_runner: ^2.3.2                # 代码生成用实用工具
 
 flutter:

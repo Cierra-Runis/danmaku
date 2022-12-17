@@ -19,7 +19,8 @@ class _SettingWidgetState extends State<SettingWidget> {
               '设置',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
-                fontSize: 28,
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -56,6 +57,71 @@ class _SettingWidgetState extends State<SettingWidget> {
                           );
                         },
                       ),
+                    ),
+                    PreferenceListItem(
+                      onTap: () async {
+                        String? selectedDirectory =
+                            await FilePicker.platform.getDirectoryPath();
+                        if (selectedDirectory != null) {
+                          profileModel.changeProfile(profileModel.profile
+                            ..userDataDir = selectedDirectory);
+                        }
+                      },
+                      title: const Text(
+                        '用户文件夹',
+                        style: TextStyle(
+                          fontFamily: 'HarmonyOS_Sans_SC',
+                        ),
+                      ),
+                      detailText: Consumer<ProfileModel>(
+                        builder: (context, profileModel, child) {
+                          return Text(
+                            profileModel.profile.userDataDir!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'HarmonyOS_Sans_SC',
+                              color: (Theme.of(context).brightness ==
+                                      Brightness.dark)
+                                  ? Colors.white54
+                                  : Colors.black54,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Consumer<ProfileModel>(
+                      builder: (context, profileModel, child) {
+                        return PreferenceListSwitchItem(
+                          title: const Text(
+                            '开机自启动',
+                            style: TextStyle(
+                              fontFamily: 'HarmonyOS_Sans_SC',
+                            ),
+                          ),
+                          detailText: Text(
+                            profileModel.profile.startUp! ? '开启　' : '关闭　',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'HarmonyOS_Sans_SC',
+                              color: (Theme.of(context).brightness ==
+                                      Brightness.dark)
+                                  ? Colors.white54
+                                  : Colors.black54,
+                            ),
+                          ),
+                          value: profileModel.profile.startUp!,
+                          onChanged: (value) async {
+                            profileModel.changeProfile(
+                              profileModel.profile..startUp = value,
+                            );
+                            if (value) {
+                              await launchAtStartup.enable();
+                            } else {
+                              await launchAtStartup.disable();
+                            }
+                          },
+                        );
+                      },
                     ),
                   ],
                 )

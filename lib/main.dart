@@ -12,6 +12,7 @@ class DanmakuApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    DevTools.printLog('[002] Danmaku 构建中');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => profileModel),

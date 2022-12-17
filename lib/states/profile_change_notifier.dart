@@ -15,12 +15,37 @@ class ProfileModel extends ChangeNotifier {
     WidgetsFlutterBinding.ensureInitialized();
     await windowManager.ensureInitialized();
 
+    DevTools.printLog('[001] 程序初始化中');
+
+    launchAtStartup.setup(
+      appName: Constant.APP_NAME,
+      appPath: Platform.resolvedExecutable,
+    );
+
     _preferences = await SharedPreferences.getInstance();
     if (_preferences.getString('profile') == null) {
       _preferences.setString(
-          'profile', jsonEncode(Profile()..themeMode = ThemeMode.system));
+        'profile',
+        jsonEncode(
+          Profile()
+            ..themeMode = ThemeMode.system
+            ..userDataDir = Directory.current.path + r'\user_data'
+            ..startUp = true,
+        ),
+      );
+      await Directory(Directory.current.path + r'\user_data').create();
     }
     profile = Profile.fromJson(jsonDecode(_preferences.getString('profile')!));
+
+    profile.themeMode ??= ThemeMode.system;
+    profile.userDataDir ??= Directory.current.path + r'\user_data';
+    profile.startUp ??= true;
+
+    if (profile.startUp!) {
+      await launchAtStartup.enable();
+    } else {
+      await launchAtStartup.disable();
+    }
 
     const WindowOptions windowOptions = WindowOptions(
       size: Size(1600, 900),
@@ -46,6 +71,7 @@ class ProfileModel extends ChangeNotifier {
 
   void changeProfile(Profile profile) async {
     this.profile = profile;
+    DevTools.printLog('[002] profile 变更为 ${profile.toJson().toString()}');
     save();
     notifyListeners();
     super.notifyListeners();
