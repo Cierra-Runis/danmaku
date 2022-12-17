@@ -289,11 +289,7 @@ def release_module() -> None:
             rule_function=lambda input_str: input_str == 'y',
         )
 
-        commit = ''
-        with open(FILE_DIR['commit_txt'], 'r', encoding='utf-8') as file:
-            commit = file.read()
-
-        os.system(f'git commit -m "{commit}"')
+        os.system(f'git commit -m "v{release_version_str}"')
         os.system('git push')
         os.system(f'git tag v{release_version_str}')
         os.system('git push --tags')
