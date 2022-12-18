@@ -276,19 +276,19 @@ def release_module() -> None:
 
         release_version_str = get_version_from_pubspec_yaml()
         print(f'> 正在发布 v{release_version_str}')
+
+        # print('> 已为你打开 commit.txt 文件')
+        # os.startfile(FILE_DIR['commit_txt'])
+
+        # # 打开文件后询问是否完成
+        # input_str = input_tool(
+        #     first_message='是否完成修改',
+        #     rule='(y)',
+        #     error_message='请输入 y 以确认修改完成',
+        #     rule_function=lambda input_str: input_str == 'y',
+        # )
+
         os.system('git add .')
-
-        print('> 已为你打开 commit.txt 文件')
-        os.startfile(FILE_DIR['commit_txt'])
-
-        # 打开文件后询问是否完成
-        input_str = input_tool(
-            first_message='是否完成修改',
-            rule='(y)',
-            error_message='请输入 y 以确认修改完成',
-            rule_function=lambda input_str: input_str == 'y',
-        )
-
         os.system(f'git commit -m "v{release_version_str}"')
         os.system('git push')
         os.system(f'git tag v{release_version_str}')
