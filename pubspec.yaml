@@ -4,7 +4,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 0.0.1+12
+version: 0.0.1+13
 
 environment:
   sdk: '>=2.18.5 <3.0.0'
@@ -31,6 +31,8 @@ dependencies:
   isar_flutter_libs: ^3.0.5           # 数据库的库
   file_picker: ^5.2.4                 # 文件选取
   launch_at_startup: ^0.2.0           # 自启动
+  open_app_file: ^4.0.1               # 打开文件
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

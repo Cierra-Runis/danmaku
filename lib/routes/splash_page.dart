@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:danmaku/index.dart';
 
 class SplashPage extends StatefulWidget {

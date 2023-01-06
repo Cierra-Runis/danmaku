@@ -123,6 +123,13 @@ class _SettingWidgetState extends State<SettingWidget> {
                         );
                       },
                     ),
+                    TextButton(
+                      onPressed: () async {
+                        await File(r'C:\Program Files (x86)\360\1.txt')
+                            .writeAsString('444111');
+                      },
+                      child: const Text('测试'),
+                    ),
                   ],
                 )
               ],

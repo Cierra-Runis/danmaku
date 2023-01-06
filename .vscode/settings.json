@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
         "danmaku"
-    ]
+    ],
+    "cmake.sourceDirectory": "${workspaceFolder}/windows",
+    "commentTranslate.hover.enabled": true,
 }

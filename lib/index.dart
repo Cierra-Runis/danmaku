@@ -29,6 +29,8 @@ export 'package:device_info_plus/device_info_plus.dart';
 export 'package:package_info_plus/package_info_plus.dart';
 export 'package:battery_plus/battery_plus.dart';
 export 'package:file_picker/file_picker.dart';
+export 'package:open_app_file/open_app_file.dart';
+export 'package:path_provider/path_provider.dart';
 
 // 图标
 export 'package:fluttericon/brandico_icons.dart';

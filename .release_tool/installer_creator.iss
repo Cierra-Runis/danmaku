@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Danmaku"
-#define MyAppVersion "0.0.1+12"
+#define MyAppVersion "0.0.1+13"
 #define MyAppPublisher "Cierra_Runis"
 #define MyAppURL "https://github.com/Cierra-Runis"
 #define MyAppExeName "danmaku.exe"
@@ -25,7 +25,7 @@ DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
+PrivilegesRequired=lowest
 OutputDir=C:\Users\28642\Desktop\NEW\VScode-Flutter\danmaku\.release_tool
 OutputBaseFilename=danmaku-installer
 SetupIconFile=C:\Users\28642\Desktop\NEW\VScode-Flutter\danmaku\build\windows\runner\Release\data\flutter_assets\assets\icon\app_icon.ico

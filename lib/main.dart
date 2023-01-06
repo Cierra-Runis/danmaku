@@ -2,17 +2,31 @@ import 'package:danmaku/index.dart';
 
 ProfileModel profileModel = ProfileModel();
 
-void main() => profileModel.init().then((e) => runApp(const DanmakuApp()));
+void main() =>
+    profileModel.init().then((e) => runApp(const DanmakuApp())).catchError(
+      (err) async {
+        Directory tempDir = await getTemporaryDirectory();
+        File logFile = File(
+          'C:\\Users\\28642\\Desktop\\'
+          '${Constant.APP_NAME}-${DateTime.now().toString()}-crash-log.txt',
+        );
+        await logFile.writeAsString(err.toString());
+        OpenAppFile.open(logFile.path);
+      },
+    );
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-class DanmakuApp extends StatelessWidget {
+class DanmakuApp extends StatefulWidget {
   const DanmakuApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<DanmakuApp> createState() => _DanmakuAppState();
+}
+
+class _DanmakuAppState extends State<DanmakuApp> {
   @override
   Widget build(BuildContext context) {
-    DevTools.printLog('[002] Danmaku 构建中');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => profileModel),
